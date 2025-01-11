@@ -9,7 +9,7 @@ file_path = r"C:\Users\Isabella.Pijl\learn\Casino Summative\player_balance.csv"
 with open(file_path, "r") as file:
     reader = csv.reader(file)
     for row in reader:
-        BAL = row[1]  # Append the second item to the list
+        BAL = row[1]  # Retrieve the balance (second column of the CSV)
 
 
 class RouletteGame:
@@ -41,7 +41,7 @@ class RouletteGame:
         )  # Bright Yellow text
         self.balance_label.grid(row=0, column=0, columnspan=12, pady=10)
 
-        # Instructions button at the top-right corner
+        # Instructions button at the top right corner
         tk.Button(
             self.root,
             text="?",
@@ -51,11 +51,11 @@ class RouletteGame:
             fg="#FFFFFF"
         ).grid(row=0, column=12, padx=10)
 
-        # Back to Lobby button at the top-left corner
+        # Back to Lobby button at the top-left corner (same as other applications / games)
         tk.Button(
             self.root,
             text="Back to Lobby",
-            command=self.root.destroy,  # Terminates the window
+            command=self.root.destroy,  # Terminates the window (this brings them back to the lobby by logic)
             width=12,
             bg="#1E90FF",
             fg="#FFFFFF"

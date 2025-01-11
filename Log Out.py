@@ -4,12 +4,12 @@ import psutil
 import pandas as pd
 import tkinter as tk
 
-# Define the file paths
+# Define the file paths for future use in the code
 file1_path = r"C:\Users\Isabella.Pijl\learn\Casino Summative\player_balance.csv"
 file2_path = r"C:\Users\Isabella.Pijl\learn\Casino Summative\all_players.csv"
 output_path = r"C:\Users\Isabella.Pijl\learn\Casino Summative\all_players.csv"
 
-def terminate_negro():
+def terminate_gameplay():
     # Terminate gameplay.py process
     for process in psutil.process_iter(['pid', 'name', 'cmdline']):
         try:
@@ -56,7 +56,7 @@ root.title("Log Out Controller")
 root.geometry("200x100")
 
 # Add "LOG OUT" button
-logout_button = tk.Button(root, text="LOG OUT", command=terminate_negro)
+logout_button = tk.Button(root, text="LOG OUT", command=terminate_gameplay)
 logout_button.pack(pady=20)
 
 # Run the Tkinter event loop

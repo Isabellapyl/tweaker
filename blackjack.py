@@ -8,44 +8,58 @@ import time
 # Initialize pygame mixer
 mixer.init()
 
+# File path to the player balance data
 file_path = r"C:\Users\Isabella.Pijl\learn\Casino Summative\player_balance.csv"
 
+
+# Load the player's balance from the CSV file
 with open(file_path, "r") as file:
     reader = csv.reader(file)
     for row in reader:
-        BAL = row[1]  # Append the second item to the list
+        BAL = row[1]   # Retrieve the balance (second column of the CSV)
+
+# Class to manage the entire Blackjack game
 class BlackjackGame:
     def __init__(self, root):
+        # Initialize the main game window
         self.root = root
         self.root.title("Blackjack")
-        self.root.geometry("500x700")  # Adjust dimensions to prevent overlapping
-        self.root.configure(bg="green")  # Casino-themed background
+        self.root.geometry("500x700")  # Set window dimensions
+        self.root.configure(bg="green")  # Set a casino-themed green background
 
+        # Initialize game state variables
         self.balance = int(BAL)  # Starting balance
         self.current_bet = 0
 
+        # Create the deck and card images
         self.deck = self.create_deck()
         self.card_images = self.load_card_images()
+        # Hands for player and dealer
         self.player_hand = []
         self.dealer_hand = []
 
+        # Add GUI elements to display game state and controls
         self.info_label = tk.Label(root, text="Welcome to Blackjack!", font=("Helvetica", 14), bg="green", fg="white")
         self.info_label.pack(pady=10)
 
         self.balance_label = tk.Label(root, text=f"Balance: ${self.balance}", font=("Helvetica", 12), bg="green", fg="white")
         self.balance_label.pack(pady=5)
 
+        # Add an instructions button for new players
         self.instruction_button = tk.Button(root, text="?", command=self.show_instructions, bg="black", fg="white", font=("Helvetica", 14), width=2)
         self.instruction_button.place(relx=0.9, rely=0.02, anchor="ne")
 
+        # Bet frame allows players to input and confirm their bet
         self.bet_frame = tk.Frame(root, bg="green")
         self.bet_frame.pack(pady=10)
 
+        # Input field for bets
         self.bet_entry = tk.Entry(self.bet_frame, width=10, validate="key")
         validate_command = (self.root.register(self.validate_numeric_input), "%P")
         self.bet_entry.configure(validatecommand=validate_command)
         self.bet_entry.pack(side=tk.LEFT, padx=5)
 
+        # Button to confirm the bet, plays audio and starts the game
         self.bet_button = tk.Button(
             self.bet_frame,
             text="Place Bet",
@@ -55,6 +69,7 @@ class BlackjackGame:
         )
         self.bet_button.pack(side=tk.LEFT, padx=5)
 
+        # Containers for displaying player and dealer hands
         self.player_container = tk.Frame(root, bg="green")
         self.player_label = tk.Label(self.player_container, text="Your Hand:", font=("Helvetica", 12), bg="green", fg="white")
         self.player_label.pack(anchor="w")
@@ -67,6 +82,7 @@ class BlackjackGame:
         self.dealer_frame = tk.Frame(self.dealer_container, bg="green")
         self.dealer_frame.pack(anchor="w")
 
+        # Add action buttons for gameplay: Hit and Stand
         self.button_frame = tk.Frame(root, bg="green")
         self.button_frame.pack(pady=10)
 
@@ -75,6 +91,8 @@ class BlackjackGame:
 
         self.stand_button = tk.Button(self.button_frame, text="Stand", command=self.stand, bg="black", fg="white", state=tk.DISABLED)
         self.stand_button.pack(side=tk.LEFT, padx=20)
+
+        # Back to Lobby button for exiting the game
         self.lobby_button = tk.Button(
             root,
             text="Back to Lobby",
@@ -85,11 +103,12 @@ class BlackjackGame:
         )
         self.lobby_button.place(x=10, y=10)  # Place in the top-left corner
 
+        # Keyboard bindings for quick access to betting and actions
         self.root.bind("<Return>", lambda event: self.place_bet_key())
         self.root.bind("h", self.hit_key)
         self.root.bind("s", self.stand_key)
 
-    # Function to play the audio
+    # Function to play the audio and place bet
     def place_bet_with_audio(self):
         play_audio()  # Call the audio function
         self.place_bet()  # Call the existing place_bet function
@@ -316,7 +335,7 @@ class BlackjackGame:
         messagebox.showinfo("Instructions", instructions)
 
     def back_to_lobby(self):
-        """Terminate the window and return to the lobby."""
+        #Terminate the window and return to the lobby
         self.root.destroy()
 
 

@@ -20,19 +20,19 @@ class CardGameApp:
         self.root = root
         self.root.title("Higher or Lower Card Game")
         self.root.geometry("800x600")  # Enlarged window size
-        self.root.configure(bg="#001F3F")  # Deep navy blue background
+        self.root.configure(bg="#001F3F")  # navy blue background
 
         # Back to Lobby button in the top-left corner
         self.back_to_lobby_button = tk.Button(
             root,
             text="Back to Lobby",
-            command=root.destroy,  # Close the game window
+            command=root.destroy,  # Close the game window (this will always bring them back to the lobby)
             bg="#FFD700",  # Yellow-gold color
             fg="#000000",  # Black text
             font=("Arial", 12),
             width=12
         )
-        self.back_to_lobby_button.place(relx=0.01, rely=0.02, anchor="nw")  # Position at the top-left corner
+        self.back_to_lobby_button.place(relx=0.01, rely=0.02, anchor="nw")  # Position at the top-left corner (for consitency through all the games)
 
         # Define font styles
         font_large = ("Arial", 20)
@@ -41,7 +41,7 @@ class CardGameApp:
         # Load balance from CSV
         self.balance = self.load_balance()
 
-        self.bet = None  # Bet must be explicitly set
+        self.bet = None  # Bet must be explicitly set before game can start
         self.deck = DECK.copy()
         random.shuffle(self.deck)
 
@@ -60,7 +60,7 @@ class CardGameApp:
         self.bet_label = tk.Label(root, text="Enter Bet Amount:", bg="#001F3F", fg="#FFFFFF", font=font_medium)
         self.bet_label.pack()
 
-        # Validate function to allow only numeric input
+        # Validate function to allow only numeric input (no letters or symbols)
         vcmd = (root.register(self.validate_numeric_input), "%P")
 
         self.bet_entry = tk.Entry(
@@ -104,7 +104,7 @@ class CardGameApp:
         self.root.bind("<Return>", lambda event: self.set_bet())
 
     def show_instructions(self):
-        """Display the instructions in a new window."""
+        #Display the instructions in a new window
         instructions_window = tk.Toplevel(self.root)
         instructions_window.title("Instructions")
         instructions_window.geometry("400x300")
@@ -119,8 +119,8 @@ class CardGameApp:
                 "- Guess if the next card is higher or lower than 7.\n"
                 "- Use 'Higher' or 'Lower' buttons (or press H/L).\n"
                 "- Special Rules:\n"
-                "  * Aces, 7s, and Kings lose 3x your bet.\n"
-                "  * Correct guesses win 1.5x your bet.\n"
+                "  * Aces, 7s, and Kings lose 2x your bet.\n"
+                "  * Correct guesses win 2x your bet.\n"
             ),
             bg="#001F3F",  # Navy blue background
             fg="#FFD700",  # Gold text
@@ -137,18 +137,18 @@ class CardGameApp:
 
 
     def validate_numeric_input(self, new_value):
-        """Validate that the input contains only numeric characters."""
+        #Validate that the input contains only numeric characters.
         if new_value == "" or new_value.isdigit():
             return True
         return False
 
     def disable_buttons(self, event=None):
-        """Disable Higher and Lower buttons if bet input changes."""
+        #Disable Higher and Lower buttons if bet input changes.
         self.higher_button.config(state="disabled")
         self.lower_button.config(state="disabled")
 
     def enable_buttons(self):
-        """Enable Higher and Lower buttons."""
+        #Enable Higher and Lower buttons.
         self.higher_button.config(state="normal")
         self.lower_button.config(state="normal")
 
@@ -247,15 +247,15 @@ class CardGameApp:
         card_name = self.get_card_name(card_value)
 
         if card_value in {1, 7, 13}:  # Ace (1), 7, or King (13)
-            loss = self.bet * 3
+            loss = self.bet * 2
             self.balance -= loss
             if self.balance < 0:  # Prevent negative balance
                 self.balance = 0
             self.result_label.config(
-                text=f"A {card_name} was drawn: {card_name} of {card_suit}. You lost 3 times your bet (${loss})!"
+                text=f"A {card_name} was drawn: {card_name} of {card_suit}. You lost 2 times your bet (${loss})!"
             )
         elif (guess == "higher" and card_value > 7) or (guess == "lower" and card_value < 7):
-            winnings = int(self.bet * 1.5)
+            winnings = int(self.bet * 2)
             self.balance += winnings
             self.result_label.config(
                 text=f"A {card_name} was drawn: {card_name} of {card_suit}. You won ${winnings}!"
