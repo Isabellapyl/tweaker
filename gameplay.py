@@ -167,7 +167,6 @@ class GameLobby:
             self.keys_pressed.remove(event.keysym)
 
     def move_player(self):
-        """Move the player based on keys pressed."""
         dx, dy = 0, 0
         if "Up" in self.keys_pressed:
             dy -= self.move_speed
