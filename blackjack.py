@@ -24,7 +24,7 @@ class BlackjackGame:
         # Initialize the main game window
         self.root = root
         self.root.title("Blackjack")
-        self.root.geometry("500x700")  # Set window dimensions
+        self.root.geometry("600x700")  # Set window dimensions
         self.root.configure(bg="green")  # Set a casino-themed green background
 
         # Initialize game state variables
